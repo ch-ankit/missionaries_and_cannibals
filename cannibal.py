@@ -14,7 +14,7 @@ class Bank:
         return True
 
 class Node:
-    def __init__(self,curr_state,generated=False, children= np.empty((0,1)), parent=None, color='green'):
+    def __init__(self,curr_state,generated=False, children= np.empty((0,1)), parent=None, color='seagreen1'):
         self.current_state=np.array(curr_state,dtype=int)
 
         self.left_bank_state=Bank(3-curr_state[0],3-curr_state[1])
@@ -46,7 +46,7 @@ class Node:
         if self.left_bank_state.is_valid() and self.right_bank_state.is_valid():
             return True
         else:
-            self.color='red'
+            self.color='lightsalmon'
             return False
         
     def generate_children(self):
@@ -80,7 +80,7 @@ class game:
                 if [0,0,1] in self.generated_states.tolist():
                     break
                 self.generated_states=np.append(self.generated_states,[given_node.current_state],axis=0)
-                if not generated_nodes.generated and generated_nodes.color=='green':
+                if not generated_nodes.generated and generated_nodes.color=='seagreen1':
                     self.generate_nodes_bfs(generated_nodes)
         else:
             return 
@@ -88,10 +88,10 @@ class game:
         return self.nodes
     def final_color_code(self):
         for node in self.nodes:
-            if not node.generated and node.color=='green':
-                if node.current_state.tolist()!=[0,0,1]:
-                    node.color='yellow'
-
+            if not node.generated and node.color=='seagreen1':
+                node.color='yellow'
+            if node.current_state.tolist()==[0,0,1]:
+                node.color='cornflowerblue'
 if __name__=="__main__":
     initial=Node([3,3,0])
     new_game=game(initial)

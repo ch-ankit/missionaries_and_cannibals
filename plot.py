@@ -6,7 +6,7 @@ os.environ["PATH"] += os.pathsep + 'F:/Ankit study/7th Sem/AI/Assignment-1/Graph
  
 class draw:
     def __init__(self):
-        self.graph = pydot.Dot('my_graph', graph_type='digraph', bgcolor='white')
+        self.graph = pydot.Dot('my_graph', graph_type='digraph', bgcolor='skyblue')
 
     def draw_self(self,given_node:Node):
         if given_node.parent==None:
@@ -37,7 +37,45 @@ class draw:
             self.graph.add_edge(pydot.Edge('root',str(given_node.current_state)+str(given_node.parent.current_state),label=str(difference)))
 
     def generate_state_space(self):
+        self.legend()
         self.graph.write_png('try.png')
+
+    def legend(self):
+        graphlegend = pydot.Cluster(graph_name="legend", label="Legend", fontsize="20", color="red",
+                                    fontcolor="blue", style="filled", fillcolor="white")
+    
+        processed_node = pydot.Node('Processed node', shape="plaintext")
+        graphlegend.add_node(processed_node)
+        dead_node = pydot.Node("Dead Node", shape="plaintext")
+        graphlegend.add_node(dead_node)
+        already_generated = pydot.Node('Already Generated', shape="plaintext")
+        graphlegend.add_node(already_generated)
+        goal_node = pydot.Node('Goal Node', shape="plaintext")
+        graphlegend.add_node(goal_node)
+        note=pydot.Node('Node [x,y,z]=> x,y = No. of missionaries and cannibals at left shore\n'
+                           'If z=1 -> boat at right shore\n'
+                           'If z=0-> boat at left shore\n'
+                           'Edge [x,y]=> Move x missionaries and y cannibals\n'
+                           'Move x missionaries and y cannibals', shape="plaintext",fontsize="18")
+        graphlegend.add_node(note)
+
+        green_node = pydot.Node("1", style="filled", fillcolor="seagreen1", label="")
+        graphlegend.add_node(green_node)
+        red_node = pydot.Node("2", style="filled", fillcolor="lightsalmon", label="")
+        graphlegend.add_node(red_node)
+        yellow_node = pydot.Node("3", style="filled", fillcolor="yellow", label="")
+        graphlegend.add_node(yellow_node)
+        blue_node = pydot.Node("4", style="filled", fillcolor="cornflowerblue", label="")
+        graphlegend.add_node(blue_node)
+
+        self.graph.add_subgraph(graphlegend)
+        self.graph.add_edge(pydot.Edge(processed_node, dead_node, style="invis"))
+        self.graph.add_edge(pydot.Edge(dead_node, already_generated, style="invis"))
+        self.graph.add_edge(pydot.Edge(already_generated, goal_node, style="invis"))
+        self.graph.add_edge(pydot.Edge(goal_node, note, style="invis"))
+        self.graph.add_edge(pydot.Edge(green_node, red_node, style="invis"))
+        self.graph.add_edge(pydot.Edge(red_node, yellow_node, style="invis"))
+        self.graph.add_edge(pydot.Edge(yellow_node, blue_node, style="invis"))
 
 if __name__=='__main__':
     initial=Node([3,3,0])

@@ -24,10 +24,16 @@ class draw:
         if given_node.parent==None:
             return
         if given_node.parent.parent!=None:
-            difference=np.subtract([3,3,0],given_node.current_state)
+            if given_node.current_state[2]==1:
+                difference=np.absolute(given_node.current_state-given_node.parent.current_state)[:2]
+            else:
+                difference=np.absolute(given_node.parent.current_state-given_node.current_state)[:2]
             self.graph.add_edge(pydot.Edge(str(given_node.parent.current_state)+str(given_node.parent.parent.current_state),str(given_node.current_state)+str(given_node.parent.current_state),label=str(difference)))
         elif given_node.parent.parent==None and given_node.parent!=None:
-            difference=np.subtract([3,3,0],given_node.current_state)
+            if given_node.current_state[2]==1:
+                difference=np.absolute(given_node.current_state-given_node.parent.current_state)[:2]
+            else:
+                difference=np.absolute(given_node.parent.current_state-given_node.current_state,)[:2]
             self.graph.add_edge(pydot.Edge('root',str(given_node.current_state)+str(given_node.parent.current_state),label=str(difference)))
 
     def generate_state_space(self):
